@@ -55,37 +55,39 @@ func update_ui_from_props():
 	%xform_scale.value = parts.scale
 
 
+func set_autoload_setting(setting: String, value) -> void:
+	var global_scene = get_node("/root/CyclopsAutoload")
+	global_scene.settings.set_property(setting, value)
+	global_scene.save_settings()
+
+
 func _on_spin_power_of_two_value_changed(value:float):
 	if !tool:
 		return
 		
 	tool.snap_to_grid_util.power_of_two_scale = value
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_POWER_OF_TWO_SCALE, int(value))
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_POWER_OF_TWO_SCALE, int(value))
 
 func _on_ed_unit_size_value_changed(value:float):
 	if !tool:
 		return
 		
 	tool.snap_to_grid_util.unit_size = value
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_UNIT_SIZE, value)
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_UNIT_SIZE, value)
 
 func _on_check_use_subdiv_toggled(toggled_on:bool):
 	if !tool:
 		return
 		
 	tool.snap_to_grid_util.use_subdivisions = toggled_on
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_USE_SUBDIVISIONS, toggled_on)
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_USE_SUBDIVISIONS, toggled_on)
 
 func _on_spin_subdiv_value_changed(value):
 	if !tool:
 		return
 		
 	tool.snap_to_grid_util.grid_subdivisions = value
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_SUBDIVISIONS, int(value))
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_SUBDIVISIONS, int(value))
 
 func _on_xform_translate_value_changed(value):
 	if !tool:
@@ -119,7 +121,8 @@ func set_grid_transform_from_ui():
 		%xform_scale.value)
 	tool.snap_to_grid_util.grid_transform = xform
 	
-	CyclopsAutoload.save_settings()
+	var global_scene = get_node("/root/CyclopsAutoload")
+	global_scene.save_settings()
 
 const meters_per_yard:float = 0.9144
 const meters_per_feet:float = 0.3048
@@ -145,12 +148,10 @@ func _on_popup_presets_index_pressed(index):
 	%spin_subdiv.value = subdiv
 			
 	tool.snap_to_grid_util.unit_size = unit_size
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_UNIT_SIZE, unit_size)
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_UNIT_SIZE, unit_size)
 
 	tool.snap_to_grid_util.grid_subdivisions = subdiv
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_SUBDIVISIONS, int(subdiv))
-
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_SUBDIVISIONS, int(subdiv))
 
 
 func _on_bn_presets_pressed():
@@ -177,10 +178,7 @@ func _on_popup_transform_presets_index_pressed(index):
 			xform = Transform3D(Basis(x, y, z), Vector3.ZERO)
 		_:
 			return
-
-			
+	
 	tool.snap_to_grid_util.grid_transform = xform
-	CyclopsAutoload.settings.set_property(CyclopsGlobalScene.SNAPPING_GRID_TRANSFORM, xform)
-
-	CyclopsAutoload.save_settings()
+	set_autoload_setting(CyclopsGlobalScene.SNAPPING_GRID_TRANSFORM, xform)
 	update_ui_from_props()

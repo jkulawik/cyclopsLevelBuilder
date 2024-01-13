@@ -81,7 +81,8 @@ var editor_cache_file:String = "editor_cache.json"
 
 func get_snapping_manager()->SnappingManager:
 	var mgr:SnappingManager = SnappingManager.new()
-	mgr.snap_enabled = CyclopsAutoload.settings.get_property(CyclopsGlobalScene.SNAPPING_ENABLED)
+	var global_scene = get_node("/root/CyclopsAutoload")
+	mgr.snap_enabled = global_scene.settings.get_property(CyclopsGlobalScene.SNAPPING_ENABLED)
 	mgr.snap_tool = snapping_system
 	
 	return mgr
