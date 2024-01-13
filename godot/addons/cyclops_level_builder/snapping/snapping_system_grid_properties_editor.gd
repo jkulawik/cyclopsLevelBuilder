@@ -53,15 +53,6 @@ func update_ui_from_props():
 	%xform_rotate.value = parts.rotate
 	%xform_shear.value = parts.shear
 	%xform_scale.value = parts.scale
-	
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 
 func _on_spin_power_of_two_value_changed(value:float):
